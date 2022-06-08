@@ -5,6 +5,30 @@
   font-family: 'Inter', sans-serif;
 }
 
+a,
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+:root {
+  --white-200: #f8f8f8;
+
+  --gray-300: #d7d7d7;
+  --gray-600: #bbbbbb;
+
+  --black-700: #1a1d23;
+
+  --pink-500: #ff57b2;
+}
+
+body {
+  background-color: var(--black-700);
+}
+
 @media (max-width: 1080px) {
   html {
     font-size: 93.75%;
