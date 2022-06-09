@@ -79,7 +79,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
 
   function getLinkComponent(post: Post): JSX.Element {
     return (
-      <Link key={post.uid} href={`/posts/${post.uid}`}>
+      <Link key={post.uid} href={`/post/${post.uid}`}>
         <a key={post.uid} className={styles.card}>
           <h2>{post.data.title}</h2>
           <p>{post.data.subtitle}</p>
