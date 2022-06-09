@@ -33,13 +33,7 @@ interface HomeProps {
 function createPostObject(post: PrismicDocument): Post {
   return {
     uid: post.uid,
-    first_publication_date: format(
-      new Date(post.first_publication_date),
-      "dd 'de' MMM yyyy",
-      {
-        locale: ptBR,
-      }
-    ),
+    first_publication_date: post.first_publication_date,
     data: {
       author: post.data.author,
       subtitle: post.data.subtitle,
@@ -86,7 +80,9 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           <div className={styles.subcontent}>
             <time>
               <FiCalendar />
-              {post.first_publication_date}
+              {format(new Date(post.first_publication_date), 'dd MMM yyyy', {
+                locale: ptBR,
+              })}
             </time>
             <span>
               <FiUser />
@@ -98,12 +94,18 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
     );
   }
 
+  function shouldShowLoadButton(): boolean {
+    return !!(
+      (postsPagination.next_page && !paginationContent) ||
+      paginationContent?.next_page
+    );
+  }
+
   return (
     <div className={commonStyles.container}>
       {postsPagination.results.map(post => getLinkComponent(post))}
       {paginationContent?.results.map(post => getLinkComponent(post))}
-      {((postsPagination.next_page && !paginationContent) ||
-        paginationContent.next_page) && (
+      {shouldShowLoadButton() && (
         <button
           type="button"
           className={styles.loadMore}

@@ -41,7 +41,11 @@ export default function Post({ post }: PostProps): JSX.Element {
       <article className={`${commonStyles.container} ${styles.container}`}>
         <h1>{post.data.title}</h1>
         <div className={styles.detailsContainer}>
-          <time>{post.first_publication_date}</time>
+          <time>
+            {format(new Date(post.first_publication_date), 'dd MMM yyyy', {
+              locale: ptBR,
+            })}
+          </time>
           <span>{post.data.author}</span>
           <span>tempo de leitura</span>
         </div>
@@ -63,9 +67,16 @@ export default function Post({ post }: PostProps): JSX.Element {
 export const getStaticPaths: GetStaticPaths = async () => {
   const prismic = getPrismicClient({});
   const posts = await prismic.getByType('posts');
+  const path = posts.results.map(post => {
+    return {
+      params: {
+        slug: post.uid,
+      },
+    };
+  });
 
   return {
-    paths: posts.results.map(post => `/post/${post.uid}`),
+    paths: path,
     fallback: true,
   };
 };
@@ -76,13 +87,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const response = await prismic.getByUID('posts', postUid);
   const { content } = response.data;
   const post: Post = {
-    first_publication_date: format(
-      new Date(response.first_publication_date),
-      "dd 'de' MMM yyyy",
-      {
-        locale: ptBR,
-      }
-    ),
+    first_publication_date: response.first_publication_date,
     data: {
       author: response.data.author,
       title: response.data.title,
