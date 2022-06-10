@@ -19,10 +19,18 @@
   }
 
   .detailsContainer {
+    display: flex;
+    gap: 1.5rem;
+
     time,
     span {
+      display: flex;
+      align-items: center;
       font-size: 0.875rem;
       color: var(--gray-600);
+    }
+    svg {
+      margin-right: 0.5rem;
     }
   }
 
